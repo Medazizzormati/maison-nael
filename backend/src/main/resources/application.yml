@@ -1,0 +1,35 @@
+spring:
+  servlet:
+    multipart:
+      enabled: false             # no file uploads
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/maisonnael}
+    username: ${DB_USER:maisonnael}
+    password: ${DB_PASSWORD}          # no default on purpose: the app refuses to start without it
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate              # schema is owned by Flyway migrations
+  flyway:
+    enabled: true
+server:
+  port: 8080
+  server-header: ""                 # do not advertise the server software
+  shutdown: graceful
+  max-http-request-header-size: 16KB
+  tomcat:
+    connection-timeout: 10s
+    max-http-form-post-size: 16KB
+    threads:
+      max: 100
+  forward-headers-strategy: ${FORWARD_HEADERS:none}   # set to "native" behind a trusted reverse proxy
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+app:
+  admin:
+    user: ${ADMIN_USER}               # no default: choose your own admin name
+    password: ${ADMIN_PASSWORD}       # at least 12 characters, no default
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
